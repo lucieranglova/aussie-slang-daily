@@ -44,12 +44,12 @@ Make it genuinely used in Australia, fun and interesting. Vary between different
         method="POST",
     )
 
-try:
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
-except urllib.error.HTTPError as e:
-    print(f"Anthropic error {e.code}: {e.read().decode('utf-8')}")
-    raise
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"Anthropic error {e.code}: {e.read().decode('utf-8')}")
+        raise
 
     text = data["content"][0]["text"].strip()
     text = text.replace("```json", "").replace("```", "").strip()
