@@ -1,0 +1,26 @@
+name: Aussie Slang of the Day
+
+on:
+  schedule:
+    # Every day at 8:00 UTC (= 10:00 CEST)
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+jobs:
+  slang:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Send Aussie Slang of the Day
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python aussie_slang.py
