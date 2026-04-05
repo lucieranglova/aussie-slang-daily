@@ -6,7 +6,7 @@ Generates a daily Australian slang term using Claude API and sends it to Discord
 import json
 import os
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 DISCORD_WEBHOOK = os.environ.get("DISCORD_WEBHOOK_URL")
@@ -26,7 +26,7 @@ Make it genuinely used in Australia, fun and interesting. Vary between different
 (food, greetings, places, activities, people). Never repeat common ones like arvo, barbie, g'day."""
 
     payload = json.dumps({
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-6",
         "max_tokens": 1000,
         "messages": [
             {"role": "user", "content": prompt}
@@ -53,7 +53,7 @@ Make it genuinely used in Australia, fun and interesting. Vary between different
 
 
 def send_discord(slang: dict):
-    today = datetime.utcnow().strftime("%B %d, %Y")
+    today = datetime.now(timezone.utc).strftime("%B %d, %Y")
 
     message = (
         f"## {slang['emoji']} Aussie Slang of the Day — {today}\n\n"
@@ -96,7 +96,7 @@ def send_discord(slang: dict):
 
 
 def main():
-    print(f"[{datetime.utcnow().isoformat()}] Generating Aussie slang...")
+    print(f"[{datetime.now(timezone.utc).isoformat()}] Generating Aussie slang...")
 
     if not ANTHROPIC_API_KEY:
         raise ValueError("Missing ANTHROPIC_API_KEY")
